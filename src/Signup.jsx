@@ -1,5 +1,7 @@
 import AuthLayout from "./AuthLayout";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode"; // default import
 
 export default function Signup() {
   const {
@@ -11,7 +13,17 @@ export default function Signup() {
   });
 
   function handleSignup(data) {
-    console.log(data, "---");
+    axios({
+      method: "post",
+      url: "https://kiwitter-node-77f5acb427c1.herokuapp.com/signup", // Doğru kayıt URL'sini kullanın
+      data: data,
+    })
+      .then((response) => {
+        const token = response.data.token;
+        const decoded = jwtDecode(token);
+        console.log(decoded, "aftersignup");
+      })
+      .catch((error) => console.log(error));
   }
 
   return (
@@ -22,7 +34,7 @@ export default function Signup() {
       <form onSubmit={handleSubmit(handleSignup)}>
         <div className="pt-4">
           <div className="flex justify-between gap-2 items-baseline pb-1">
-            <label htmlFor="nickname ">İsim Soyisim</label>
+            <label htmlFor="name">İsim Soyisim</label>
             <span className="text-sm font-medium text-red-600">
               {errors.name && errors.name.message.toString()}
             </span>
@@ -36,7 +48,7 @@ export default function Signup() {
 
         <div className="pt-4">
           <div className="flex justify-between gap-2 items-baseline pb-1">
-            <label htmlFor="nickname ">Kullanıcı adı</label>
+            <label htmlFor="nickname">Kullanıcı adı</label>
             <span className="text-sm font-medium text-red-600">
               {errors.nickname && errors.nickname.message.toString()}
             </span>
@@ -50,7 +62,7 @@ export default function Signup() {
 
         <div className="pt-4">
           <div className="flex justify-between gap-2 items-baseline pb-1">
-            <label htmlFor="nickname">Email</label>
+            <label htmlFor="email">Email</label>
             <span className="text-sm font-medium text-red-600">
               {errors.email && errors.email.message.toString()}
             </span>
@@ -84,9 +96,9 @@ export default function Signup() {
         <div className="pt-4">
           <button
             type="submit"
-            className="h-12 text-center block w-full rounded-lg bg-lime-700 text-white font-bold "
+            className="h-12 text-center block w-full rounded-lg bg-lime-700 text-white font-bold"
           >
-            GİRİŞ
+            KAYIT OL
           </button>
         </div>
       </form>
