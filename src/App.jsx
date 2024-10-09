@@ -3,10 +3,15 @@ import { Switch, Route } from "react-router-dom";
 import PageLayout from "./PageLayout";
 import Login from "./Login";
 import Signup from "./Signup";
-import { UserContextDepo } from "../UserContextDepo";
+import { UserContextDepo } from "./UserContextDepo";
 import PrivateRoute from "./PrivateRoute";
+import Twit from "./Twit";
+import MainPage from "./MainPage";
+// import UserTweets from "./UserTweets";
+// import TweetDetail from "./TweetDetail";
 
 function App() {
+  //kullanıcı ilk sayfaya geldiğinde yani login olurken buradan usercontextdepo'ya girecek. aynı browser router gibi
   return (
     <div>
       <UserContextDepo>
@@ -14,21 +19,20 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
+
           <Route path="/signup">
             <Signup />
           </Route>
 
           <Route path="/" exact>
             {/* /?variant=most_liked */}
-            <PageLayout>Home</PageLayout>
+            <MainPage />
           </Route>
 
-          <Route path="/profile/:nick">
-            <PageLayout>Profile page</PageLayout>
-          </Route>
+          <Route path="/profile/:nickname">{/* <UserTweets /> */}</Route>
 
           <PrivateRoute path="/detail/:twitId">
-            <PageLayout>Twit detail</PageLayout>
+            {/* <TweetDetail /> */}
           </PrivateRoute>
         </Switch>
       </UserContextDepo>

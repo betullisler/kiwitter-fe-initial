@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../UserContextDepo";
+import { UserContext } from "./UserContextDepo";
 import { PersonSimpleRun } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 
@@ -32,9 +32,7 @@ export default function PageLayout({ children }) {
         </header>
       </div>
       <div className="pt-6 pb-12">
-        <main className="container mx-auto bg-white min-h-96 rounded-xl shadow-xl p-6">
-          {children}
-        </main>
+        <main className="max-w-xl mx-auto">{children}</main>
       </div>
     </div>
   );

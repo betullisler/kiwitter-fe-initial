@@ -6,7 +6,7 @@ export const UserContext = createContext(); //UserContext context'in kendisi
 
 export const UserContextDepo = ({ children }) => {
   //bu component kısmı, bunu app.jsx'te browser router gibi kullandık işimiz onunla bitti
-  const token = localStorage.getItem("kiwitter_user");
+  const token = localStorage.getItem("kiwitter_user"); //normalde state'ler ekran yenilendiğinde sıfırlanıyor fakat LS kullanarak bbunu engelliyoruz
 
   let initialUser = null;
 
@@ -21,7 +21,7 @@ export const UserContextDepo = ({ children }) => {
     }
   }
 
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState(initialUser); //yani burada state sıfırlansa bile LS'dan tekrar koyuyoruz içine, geçerliliğini vs konttol ettikten sonra
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

@@ -5,7 +5,7 @@ import AuthLayout from "./AuthLayout";
 import { useForm } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
 import { useContext } from "react";
-import { UserContext } from "../UserContextDepo";
+import { UserContext } from "./UserContextDepo";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -33,6 +33,7 @@ export default function Login() {
       data: data,
     })
       .then((response) => {
+        //kullanıcı bilgilerini kontrol ediyoruz, doğrusa go değilse error
         const token = response.data.token;
         const decodedUser = jwtDecode(token);
         setUser(decodedUser);
