@@ -2,31 +2,43 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { UserContext } from "./UserContextDepo";
 import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function NewTweet() {
+export default function NewTweet({ replyTo = null }) {
   const { register, handleSubmit, watch } = useForm();
   const { user } = useContext(UserContext);
-
-  const contentText = watch("content") || ""; //burada kaldım. video dakika 57
-
+  const endPoint = replyTo
+    ? `https://kiwitter-node-77f5acb427c1.herokuapp.com/twits/${replyTo}/replies`
+    : "https://kiwitter-node-77f5acb427c1.herokuapp.com/twits";
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (newTweetData) => {
+      return axios.post(endPoint, newTweetData, {
+        headers: {
+          Authorization: localStorage.getItem("kiwitter_user"),
+        },
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: replyTo
+          ? ["tweetDetail", String(replyTo)]
+          : ["mainPageTwits"],
+      });
+    },
+  });
+  const contentText = watch("content") || "";
   const sendTweet = (data) => {
     const newTweetData = {
       author_id: user.id,
       ...data,
+      replyTo: replyTo,
     };
-    axios // axios => bu bir network request'i => promise
-      .post(
-        "https://kiwitter-node-77f5acb427c1.herokuapp.com/twits",
-        newTweetData,
-        { headers: { Authorization: localStorage.getItem("kiwitter_user") } }
-      )
-      .then((response) => console.log("resp", response))
-      .catch((error) => console.log("hata", error));
+    mutation.mutate(newTweetData);
   };
-
   return (
     <div className="bg-white rounded-xl shadow-xl p-7 pb-6 pr-6">
-      <p className="text-xl">Ne Düşünüyorsun?</p>
+      <p className="text-xl">Ne düşünüyorsun?</p>
       <form onSubmit={handleSubmit(sendTweet)}>
         <textarea
           {...register("content")}
@@ -34,7 +46,7 @@ export default function NewTweet() {
         ></textarea>
         <div className="flex gap-2 items-center justify-end">
           <span
-            className={`text-sm font-bold ${
+            className={`text-sm font-bold px-2 ${
               contentText.length > 120 ? "text-red-500" : "text-black/70"
             }`}
           >

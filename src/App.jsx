@@ -7,8 +7,8 @@ import { UserContextDepo } from "./UserContextDepo";
 import PrivateRoute from "./PrivateRoute";
 import Twit from "./Twit";
 import MainPage from "./MainPage";
-// import UserTweets from "./UserTweets";
-// import TweetDetail from "./TweetDetail";
+import UserTweets from "./UserTweets";
+import TweetDetail from "./TweetDetail";
 
 function App() {
   //kullanıcı ilk sayfaya geldiğinde yani login olurken buradan usercontextdepo'ya girecek. aynı browser router gibi
@@ -29,10 +29,12 @@ function App() {
             <MainPage />
           </Route>
 
-          <Route path="/profile/:nickname">{/* <UserTweets /> */}</Route>
+          <Route path="/profile/:nickname">
+            <UserTweets />
+          </Route>
 
           <PrivateRoute path="/detail/:twitId">
-            {/* <TweetDetail /> */}
+            <TweetDetail />
           </PrivateRoute>
         </Switch>
       </UserContextDepo>
